@@ -168,8 +168,8 @@ export class VisualMoveInput {
                         if (prevState === MOVE_INPUT_STATE.clickTo) {
                             this.view.setPieceVisibility(this.toSquare, true)
                         }
-                        this.setMoveInputState(MOVE_INPUT_STATE.reset)
                     })
+                    this.setMoveInputState(MOVE_INPUT_STATE.reset)
                 } else {
                     this.view.setPieceVisibility(this.fromSquare, true)
                     this.setMoveInputState(MOVE_INPUT_STATE.reset)
