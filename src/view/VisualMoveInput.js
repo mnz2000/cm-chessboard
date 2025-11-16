@@ -15,7 +15,7 @@ const MOVE_INPUT_STATE = {
     dragTo: "dragTo",
     clickDragTo: "clickDragTo",
     moveDone: "moveDone",
-    reset: "reset"
+    reset: "reset",
     resetListeners: "resetListeners"
 }
 
