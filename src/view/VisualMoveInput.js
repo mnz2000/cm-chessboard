@@ -15,8 +15,7 @@ const MOVE_INPUT_STATE = {
     dragTo: "dragTo",
     clickDragTo: "clickDragTo",
     moveDone: "moveDone",
-    reset: "reset",
-    resetListeners: "resetListeners"
+    reset: "reset"
 }
 
 export const MOVE_CANCELED_REASON = {
@@ -171,7 +170,18 @@ export class VisualMoveInput {
                         }
                         this.setMoveInputState(MOVE_INPUT_STATE.reset)
                     })
-                    this.setMoveInputState(MOVE_INPUT_STATE.resetListeners)
+                    if (this.pointerMoveListener) {
+                        removeEventListener(this.pointerMoveListener.type, this.pointerMoveListener)
+                        this.pointerMoveListener = null
+                    }
+                    if (this.pointerUpListener) {
+                        removeEventListener(this.pointerUpListener.type, this.pointerUpListener)
+                        this.pointerUpListener = null
+                    }
+                    if (this.contextMenuListener) {
+                        this.chessboard.view.svg.removeEventListener("contextmenu", this.contextMenuListener)
+                        this.contextMenuListener = null
+                    }
                 } else {
                     this.view.setPieceVisibility(this.fromSquare, true)
                     this.setMoveInputState(MOVE_INPUT_STATE.reset)
@@ -189,16 +199,6 @@ export class VisualMoveInput {
                     Svg.removeElement(this.draggablePiece)
                     this.draggablePiece = null
                 }
-                this.setMoveInputState(MOVE_INPUT_STATE.resetListeners)
-                this.setMoveInputState(MOVE_INPUT_STATE.waitForInputStart)
-                // set temporarily hidden pieces visible again
-                const hiddenPieces = this.view.piecesGroup.querySelectorAll("[visibility=hidden]")
-                for (let i = 0; i < hiddenPieces.length; i++) {
-                    hiddenPieces[i].removeAttribute("visibility")
-                }
-                break
-
-            case MOVE_INPUT_STATE.resetListeners:
                 if (this.pointerMoveListener) {
                     removeEventListener(this.pointerMoveListener.type, this.pointerMoveListener)
                     this.pointerMoveListener = null
@@ -210,6 +210,12 @@ export class VisualMoveInput {
                 if (this.contextMenuListener) {
                     this.chessboard.view.svg.removeEventListener("contextmenu", this.contextMenuListener)
                     this.contextMenuListener = null
+                }
+                this.setMoveInputState(MOVE_INPUT_STATE.waitForInputStart)
+                // set temporarily hidden pieces visible again
+                const hiddenPieces = this.view.piecesGroup.querySelectorAll("[visibility=hidden]")
+                for (let i = 0; i < hiddenPieces.length; i++) {
+                    hiddenPieces[i].removeAttribute("visibility")
                 }
                 break
 
