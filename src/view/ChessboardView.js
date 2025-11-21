@@ -154,6 +154,7 @@ export class ChessboardView {
         }
         this.svg.setAttribute("width", "100%")
         this.svg.setAttribute("height", "100%")
+        this.state.invokeExtensionPoints(EXTENSION_POINT.boardResized)
     }
 
     redrawBoard() {
