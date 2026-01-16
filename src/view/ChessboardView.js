@@ -308,7 +308,7 @@ export class ChessboardView {
         const piece = this.getPieceElement(square)
         if (piece) {
             if (visible) {
-                piece.setAttribute("visibility", "visible")
+                piece.removeAttribute("visibility")
             } else {
                 piece.setAttribute("visibility", "hidden")
             }
