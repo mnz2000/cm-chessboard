@@ -22,9 +22,13 @@ export const PROMOTION_DIALOG_RESULT_TYPE = {
 export class PromotionDialog extends Extension {
 
     /** @constructor */
-    constructor(chessboard) {
+    constructor(chessboard, props = {}) {
         super(chessboard)
         this.registerExtensionPoint(EXTENSION_POINT.afterRedrawBoard, this.extensionPointRedrawBoard.bind(this))
+		this.props = {
+			extraWide: 1.0
+		};
+		Object.assign(this.props, props);
         chessboard.showPromotionDialog = this.showPromotionDialog.bind(this)
         chessboard.isPromotionDialogShown = this.isPromotionDialogShown.bind(this)
         this.promotionDialogGroup = Svg.addElement(chessboard.view.interactiveTopLayer, "g", {class: "promotion-dialog-group"})
@@ -64,7 +68,7 @@ export class PromotionDialog extends Extension {
     }
 
     drawPieceButton(piece, point) {
-        const squareWidth = this.chessboard.view.squareWidth
+        const squareWidth = this.chessboard.view.squareWidth * this.props.extraWide
         const squareHeight = this.chessboard.view.squareHeight
         Svg.addElement(this.promotionDialogGroup,
             "rect", {
@@ -72,6 +76,7 @@ export class PromotionDialog extends Extension {
                 class: "promotion-dialog-button",
                 "data-piece": piece
             })
+		point.x += this.chessboard.view.squareWidth * (this.props.extraWide-1.0)/2
         this.chessboard.view.drawPiece(this.promotionDialogGroup, piece, point)
     }
 
@@ -97,7 +102,7 @@ export class PromotionDialog extends Extension {
                 "rect", {
                     x: squareCenterPoint.x + offsetX,
                     y: squareCenterPoint.y + offsetY,
-                    width: squareWidth,
+                    width: squareWidth * this.props.extraWide,
                     height: squareHeight * 4,
                     class: "promotion-dialog"
                 })
