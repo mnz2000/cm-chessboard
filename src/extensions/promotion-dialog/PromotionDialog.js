@@ -146,7 +146,7 @@ export class PromotionDialog extends Extension {
     }
 
     promotionDialogOnClickPiece(event) {
-        if (event.button !== 2) {
+        if (event.button === 0) {
             if (event.target.dataset.piece) {
                 if(this.state.callback) {
                     this.state.callback({
@@ -159,7 +159,9 @@ export class PromotionDialog extends Extension {
             } else {
                 this.promotionDialogOnCancel(event)
             }
-        }
+		} else {
+			this.promotionDialogOnCancel(event)
+		}
     }
 
     promotionDialogOnCancel(event) {
@@ -183,7 +185,7 @@ export class PromotionDialog extends Extension {
     setDisplayState(displayState) {
         this.state.displayState = displayState
         if (displayState === DISPLAY_STATE.shown) {
-            this.clickDelegate = Utils.delegate(this.chessboard.view.svg,
+            this.clickDelegate = Utils.delegate(window,
                 "pointerdown",
                 "*",
                 this.promotionDialogOnClickPiece.bind(this))
