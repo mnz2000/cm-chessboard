@@ -49,7 +49,7 @@ export class ChessboardView {
         if (chessboard.props.responsive) {
             if (typeof ResizeObserver !== "undefined") {
                 this.resizeObserver = new ResizeObserver(() => {
-                    setTimeout(() => { // prevents "ResizeObserver loop completed with undelivered notifications."
+                    requestAnimationFrame(() => { // prevents "ResizeObserver loop completed with undelivered notifications."
                         this.handleResize()
                     })
                 })
